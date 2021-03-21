@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page">Search Result for {{ request.GET.q }}</h2>
+        {% if request.GET.min_q or request.GET.max_q %}
+        <h6 class="font-weight-light ml-2">Price Range From
+
+            Rs. {% if request.GET.min_q %} {{ request.GET.min_q }} {% else %} 0 {% endif %}
+
+            {% if request.GET.max_q %} to Rs. {{ request.GET.max_q }} {% endif %}
+
+        </h6>
+        {% endif %}
+        <hr>
+    </div>
+</section>
+
+
+<section class="section-content pb-5">
+    <div class="container">
+
+        <div class="row">
+            <aside class="col-md-3">
+                <form action="{% url 'search' %}" method="get">
+                    <div class="card">
+
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true"
+                                    class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Search</h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_1" style="">
+                                <div class="card-body">
+                                    <div class="input-group">
+                                        <input name="q" value="{{ request.GET.q }}" type="text" class="form-control"
+                                            placeholder="Search">
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-light" type="button"><i
+                                                    class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_cat" aria-expanded="true"
+                                    class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Category </h6>
+                                </a>
+                            </header>
+
+                            <div class="filter-content collapse show" id="collapse_cat">
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <select class="form-control select2 " name='cat_q'>
+
+                                            {% if request.GET.cat_q %}
+                                            <option selected hidden>{{ request.GET.cat_q }}</option>
+                                            {% else %}
+                                            <option selected disabled hidden>Select a Category</option>
+                                            {% endif %}
+    
+                                            {% for cat in category %}
+                                            <option>{{ cat.name }}</option>
+                                            {% endfor %}
+    
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </article>
+
+
+                        <article class="filter-group">
+                            <header class="card-header">
+                                <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true"
+                                    class="">
+                                    <i class="icon-control fa fa-chevron-down"></i>
+                                    <h6 class="title">Price range </h6>
+                                </a>
+                            </header>
+                            <div class="filter-content collapse show" id="collapse_3" style="">
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label>Min</label>
+                                            <input value="{{ request.GET.min_q }}" class="form-control"
+                                                placeholder="Rs.0" type="number" name='min_q'>
+                                        </div>
+                                        <div class="form-group text-right col-md-6">
+                                            <label>Max</label>
+                                            <input value="{{ request.GET.max_q }}" class="form-control"
+                                                placeholder="Rs.100000" type="number" name='max_q'>
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-block btn-primary">Apply</button>
+                                </div>
+                            </div>
+                        </article>
+
+                    </div>
+                </form>
+            </aside>
+            <main class="col-md-9">
+
+                <header class="border-bottom mb-4 pb-3">
+                    <div class="form-inline">
+                        <span class="mr-md-auto">{{ object_list.count }} products found </span>
+
+                        <!-- <select class="mr-2 form-control">
+                            <option>Latest items</option>
+                            <option>Trending</option>
+                            <option>Most Popular</option>
+                            <option>Cheapest</option>
+                        </select>
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-outline-secondary" data-toggle="tooltip" title="List view">
+                                <i class="fa fa-bars"></i></a>
+                            <a href="#" class="btn  btn-outline-secondary active" data-toggle="tooltip"
+                                title="Grid view">
+                                <i class="fa fa-th"></i></a>
+                        </div> -->
+
+                    </div>
+                </header>
+
+                <div class="row">
+                    {% for pro in object_list %}
+                    <div class="col-md-4">
+                        <figure class="card card-product-grid">
+                            <div class="img-wrap">
+                                <img src="{{ pro.image_url }}">
+                                <a class="btn-overlay" href="{{pro.get_absolute_url}}"><i class="fa fa-search-plus"></i>
+                                    View Product </a>
+                            </div>
+                            <figcaption class="info-wrap">
+                                <div class="fix-height">
+                                    <a href="{{pro.get_absolute_url}}" class="title">{{ pro.title|truncatewords:8 }}</a>
+                                    <div class="price-wrap mt-2">
+                                        <span class="price">Rs. {{ pro.price }}</span>
+                                    </div>
+                                </div>
+                                <a href="#" class="btn btn-block btn-primary">Buy From EasyMart </a>
+                            </figcaption>
+                        </figure>
+                    </div>
+                    {% empty %}
+                    <h1> No Result Found </h1>
+                    {% endfor %}
+
+
+                </div>
+
+
+                <nav class="mt-4" aria-label="Page navigation sample">
+
+                    <!-- <ul class="pagination">
+                        <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul> -->
+
+                    <!-- <a href="?page={{ all_posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">previous</a> -->
+
+
+                    {% if is_paginated %}
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                <li class="page-item" ><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}">Previous</a></li>
+                                {% else %}
+                                <li class="page-item disabled"><a class="page-link" >Previous</a></li>
+                                {% endif %}
+                                {% for i in paginator.page_range %}
+                                {% if page_obj.number == i %}
+                                <li class="page-item active"><a class="page-link">{{ i }} <a class="sr-only">(current)</a></a></li>
+                                {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ i }}&q={{ request.GET.q }}">{{ i }}</a></li>
+                                {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">Next</a></li>
+                                {% else %}
+                                <li class="disabled page-item"><a class="page-link">Next</a></li>
+                                {% endif %}
+                            </ul>
+                    {% endif %}
+
+                </nav>
+
+            </main>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content %}
+
+
+<section style="background-color: #fff0e5 !important;">
+  <div class="container py-1">
+    <ol class="breadcrumb m-0 bg-transparent">
+      <li class="breadcrumb-item "><a class="text-dark" href="#">Home</a></li>
+      <li class="breadcrumb-item "><a class="text-dark" href="{{ category.get_absolute_url }}">{{product.category}}</a>
+      </li>
+      <li class="breadcrumb-item "><a class="text-dark"
+          href="{{ subcategory.get_absolute_url }}">{{product.subcategory}}</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{product.title}}</li>
+    </ol>
+  </div>
+</section>
+
+<section class="section-content padding-y">
+  <div class="container">
+    {% if user.is_authenticated %}
+    <div class="box mb-5">
+
+      <div class="widget  d-inline-block">
+        <a href="{% url 'update-product' product.slug %}" class="icontext mr-4 ">
+          <i class="icon mr-2 fa fa-pencil"></i>
+          <div class="text">
+            Edit Product
+          </div>
+        </a>
+      </div>
+
+      <div class="widget  d-inline-block">
+        <a href="{% url 'remove' product.slug %}" class="icontext mr-4 ">
+          <i class="icon mr-2 fa fa-close"></i>
+          <div class="text">
+            Delete Product
+          </div>
+        </a>
+      </div>
+
+    </div>
+    {% endif %}
+
+    <div class="card">
+      <div class="row no-gutters">
+        <aside class="col-md-6">
+
+          <script src="https://product-gallery.cloudinary.com/all.js" type="text/javascript"></script>
+          <div id="my-product-gallery">
+          </div>
+
+          <script type="text/javascript">
+            const myGallery = cloudinary.galleryWidget({
+              container: "#my-product-gallery",
+              cloudName: "{{product.cloudName}}",
+              mediaAssets: [
+                {tag: "{{product.photo_tag}}"},
+                {% if product.video_tag %} 
+                {tag: "{{product.video_tag}}",mediaType: "video"} 
+                {% endif %}
+              ]
+            });
+
+            myGallery.render();
+          </script>
+
+
+
+        </aside>
+        <main class="col-md-6 border-left">
+
+          <article class="content-body">
+
+            <h2 class="title">{{product.title}}</h2>
+
+            <div class="my-3">
+              <var class="price h4">Rs. {{ product.price }}</var>
+              <span class="text-muted">/ per item</span>
+            </div>
+
+            <p>{{ product.description|truncatewords:10|safe }} <a href="#description">See More</a></p>
+
+            <dl class="row">
+              {% if product.brand %}
+              <dt class="col-sm-3">Brand</dt>
+              <dd class="col-sm-9">{{product.brand}}</dd>
+              {% endif %}
+
+              {% if product.model_no %}
+              <dt class="col-sm-3">Model No.</dt>
+              <dd class="col-sm-9">{{product.model_no}}</dd>
+              {% endif %}
+
+              {% if product.color %}
+              <dt class="col-sm-3">Color</dt>
+              <dd class="col-sm-9">{{product.color}}</dd>
+              {% endif %}
+
+              {% if product.warrenty_type %}
+              <dt class="col-sm-3">Warrenty Type</dt>
+              <dd class="col-sm-9">{{ product.warrenty_type }}</dd>
+              {% endif %}
+
+              {% if product.warrenty_period %}
+              <dt class="col-sm-3">Warrenty Time</dt>
+              <dd class="col-sm-9">{{ product.warrenty_period }}</dd>
+              {% endif %}
+
+              <dt class="col-sm-3">Delivery</dt>
+              <dd class="col-sm-9">All over Nepal | <small class="text-danger">Free Delivary Within Kathmandu
+                  Valley.</small> </dd>
+            </dl>
+
+            <dt class="text-info"> <i class="fas fa-undo-alt"></i> <span class="text">7 day Free Return.</span></dt>
+
+            <hr>
+            <a href="#" class="btn  btn-primary"> Product Brocher </a>
+            <a href="#" class="btn  btn-outline-danger"> <span class="text">Buy from EasyMart</span> <i
+                class="fas fa-shopping-cart"></i> </a>
+          </article>
+
+        </main>
+      </div>
+    </div>
+
+    <article id='description' class="card mt-5">
+      <div class="card-body">
+
+        <div class="row">
+          <aside class="col-md-6">
+            <h5>Description</h5>
+            <p>{{ product.description|safe }}</p>
+          </aside>
+          <aside class="col-md-6">
+            <h5>Features</h5>
+            {{ product.features|safe }}
+
+          </aside>
+        </div>
+
+        <hr>
+        <h5>Specification</h5>
+        <p>
+          {{ product.specification|safe }}
+        </p>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+
+{% endblock %}

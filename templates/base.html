@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"> 
+    
+    <script src="https://kit.fontawesome.com/336b55e0d0.js" crossorigin="anonymous"></script>
+
+    <title>Omkar Organization</title>
+    <!-- navbar  -->
+    {% include 'nav.html' %}
+</head>
+
+<body> 
+    {% for message in messages %}
+        <div class="w-75 mt-3 mx-auto alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}  
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    
+    {% include "css.html" %}
+    {% block content %}
+    {% endblock %}
+    {% include 'footer.html' %}
+    {% include "js.html" %}
+    
+</body>
+
+</html>

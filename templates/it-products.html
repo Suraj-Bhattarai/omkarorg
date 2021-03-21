@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="section-pagetop bg">
+    <div class="container">
+        <h2 class="title-page">{{ object_list.category.name }}</h2>
+        <h2 class="title-page">IT Products</h2>
+        <hr>
+    </div>
+</section>
+
+
+<section class="section-content pb-5">
+    <div class="container">
+        <div class="row">
+            {% for pro in object_list %}
+            <div class="col-md-3">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap">
+                        <img src="{{ pro.image_url }}">
+                        <a class="btn-overlay" href="{{pro.get_absolute_url}}"><i class="fa fa-search-plus"></i>
+                            View Product </a>
+                    </div>
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="{{pro.get_absolute_url}}" class="title">{{ pro.title|truncatewords:8 }}</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">Rs. {{ pro.price }}</span>
+                            </div>
+                        </div>
+                        <a href="#" class="btn btn-block btn-primary">Buy From EasyMart </a>
+                    </figcaption>
+                </figure>
+            </div>
+            {% empty %}
+            <h1> No Result Found </h1>
+            {% endfor %}
+
+
+        </div>
+
+        <nav class="mt-4" aria-label="Page navigation sample">
+            {% if is_paginated %}
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                {% endif %}
+                {% for i in paginator.page_range %}
+                {% if page_obj.number == i %}
+                <li class="page-item active"><a class="page-link">{{ i }} <a class="sr-only">(current)</a></a></li>
+                {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                {% else %}
+                <li class="disabled page-item"><a class="page-link">Next</a></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </nav> 
+
+    </div>
+</section>
+
+{% endblock %}

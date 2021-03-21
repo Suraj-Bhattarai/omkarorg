@@ -1,0 +1,71 @@
+{% load static %}
+
+
+{% url 'home' as home_url %}
+{% url 'about' as about_url %}
+{% url 'addproduct' as addproduct_url %}
+
+{% url 'pos-products' as pos_products_url %}
+{% url 'it-products' as it_products_url %}
+
+{% url 'track-service' as track_service_url %}
+
+
+
+<header class="section-header">
+  <nav class="navbar navbar-main navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="{{ home_url }}"><img src="{% static 'images/logo1.png' %}" class="logo"
+          width="160"></a>
+
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main_nav4"
+        aria-controls="main_nav4" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="main_nav4">
+        <form action="{% url 'search' %}" method="get" role="form" class="form-inline flex-grow-1 mr-auto my-2 my-lg-0">
+          <input name="q" value="{{ request.GET.q }}" class="form-control w-75 mr-sm-2" type="search"
+            placeholder="Search">
+          <button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
+        </form>
+
+        <ul class="navbar-nav mt-2 mt-lg-0" style="font-weight: 500;">
+          <li class="nav-item {% if request.path == home_url %} active {% endif %} mr-2">
+            <a class="nav-link" href="{{ home_url }}">Home <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item {% if request.path == pos_products_url %} active {% endif %} mr-2">
+            <a class="nav-link" href="{{ pos_products_url }}">POS Products <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item {% if request.path == it_products_url %} active {% endif %} mr-2">
+            <a class="nav-link" href="{{ it_products_url }}">IT Products <span class="sr-only">(current)</span></a>
+          </li>
+
+          <li class="nav-item {% if request.path == about_url %} active {% endif %}">
+            <a class="nav-link" href="{{ about_url }}">About us</a>
+          </li>
+
+          {% if user.is_authenticated %}
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="" aria-haspopup="true"
+              aria-expanded="false">Admin's options</a>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="{{ addproduct_url }}">Add Product</a>
+              <a class="dropdown-item" href="{% url 'addservice' %}">Add New Service</a>
+            </div>
+          </li>
+          
+          {% endif %}
+
+        </ul>
+
+        <a href="{{ track_service_url }}" class="btn btn-sm btn-primary ml-3"><i class="fas fa-plus"></i><span
+            class="text">Track Your Service</span></a>
+
+      </div>
+    </div>
+  </nav>
+</header>

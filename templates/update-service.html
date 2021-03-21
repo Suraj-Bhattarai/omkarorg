@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="row justify-content-center container mx-auto">
+	<div class='col-md-8'>
+
+		<h2 class="title-page my-4">Update Service</h2>
+		<form method="POST" enctype="multipart/form-data">
+			{% csrf_token %}
+
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-6">
+							<div class="form-group">
+								<label for="username">Customer Name</label>
+								{{form.customer_name}}
+							</div>
+						</div>
+
+						<div class="col-6">
+							<div class="form-group">
+								<label for="username">Unique Tracking Code</label>
+								{{form.tracking_code}}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label>Product Name</label>
+						{{form.product_name}}
+					</div>
+
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label for="username">Service Cost</label>
+								{{form.price}}
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Estimate Time</label>
+								{{form.estimate_time}}
+							</div>
+						</div>
+
+						<div class="col-md-4">
+							<div class="form-group">
+								<label>Service Status</label>
+								{{form.status}}
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label>Note</label>
+						{{form.note}}
+					</div>
+				</div>
+			</div>
+
+			<button class="btn btn-success btn-block my-4" type="summit">Update</button>
+		</form>
+
+	</div>
+</div>
+
+
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+<script>
+	// This code activates flatpickr on fields with the 'datetimefield' class when the document has loaded
+	window.addEventListener("DOMContentLoaded", function () {
+		flatpickr(".datetimefield", {
+			enableTime: true,
+			enableSeconds: true,
+			dateFormat: "Y-m-d H:i:S",
+		});
+	});
+</script>
+
+{% endblock %}
